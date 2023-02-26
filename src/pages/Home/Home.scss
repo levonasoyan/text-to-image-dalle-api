@@ -1,0 +1,23 @@
+.home_wrapper {
+  width: 100%;
+  height: 100vh;
+}
+
+.flex_center {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textinput {
+  padding: 10px;
+  height: 50px;
+  width: 500px;
+}
+
+.searchbtn{
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
