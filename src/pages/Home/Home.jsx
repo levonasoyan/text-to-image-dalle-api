@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-import "./Home.scss";
 import { SyncLoader } from "react-spinners";
+import { Button, TextField } from "@mui/material";
+import Header from "../../components/Header/Header";
+import "./Home.scss";
 
 const Home = () => {
   const [img, setImg] = useState("");
@@ -9,17 +11,19 @@ const Home = () => {
   const [sent, setSent] = useState(false);
 
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+
   const handleRequest = async () => {
+    setImg("");
     setSent(true);
     setTimeout(() => {
       setSent(false);
-    }, 5000);
+    }, 6000);
     const { data } = await axios.post(
       "https://api.openai.com/v1/images/generations",
       {
         prompt: `${text}`,
         n: 1,
-        size: "1024x1024",
+        size: "512x512",
       },
       {
         headers: {
@@ -27,31 +31,65 @@ const Home = () => {
         },
       }
     );
-
     setImg(data.data[0].url);
   };
+
   return (
     <>
       <div className="home_wrapper">
-        <div className="flex_center">
-          <h1 className="header">Text To Image </h1>
-        </div>
+        <Header />
         <div className="flex_center" style={{ marginTop: "150px" }}>
-          <input
-            type="text"
-            className="textinput"
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            label="Image Description Here"
             onChange={(e) => setText(e.target.value)}
+            sx={{
+              "& label.Mui-focused": {
+                color: "#008080",
+              },
+              "& .MuiInput-underline:after": {
+                borderBottomColor: "#008080",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "#008080",
+              },
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: "#008080",
+                },
+              },
+              input: {
+                color: "#008080",
+                outline: "none",
+              },
+              width: "400px",
+            }}
           />
-          <button className="searchbtn" onClick={() => handleRequest()}>
-            Search
-          </button>
+
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#008080",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#004c4c",
+                transition: "0.2s",
+              },
+              height: "50px",
+              marginLeft: "10px",
+            }}
+            onClick={() => handleRequest()}
+          >
+            Generate Image
+          </Button>
         </div>
-        <div className="flex_center">
+        <div className="flex_center" style={{ marginTop: "100px" }}>
           <img src={img} alt="" />
         </div>
         {sent ? (
           <div className="flex_center" style={{ marginTop: "100px" }}>
-            <SyncLoader color="#36d7b7" />
+            <SyncLoader color="#008080" />
           </div>
         ) : (
           ""
